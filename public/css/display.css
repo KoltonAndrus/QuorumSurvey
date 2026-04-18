@@ -1,0 +1,140 @@
+/* Display page — dark, projection-optimized, fills below the shared header */
+html, body { height: 100%; }
+
+body.display-body {
+  background: #0f1923;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Override shared header colors for the dark display page */
+body.display-body .site-header {
+  flex-shrink: 0;
+}
+
+#app {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#loading, #not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 1.4rem;
+  color: #6e7a8a;
+}
+
+/* Main layout */
+#display {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 16px;
+  background: #162030;
+  border-right: 1px solid rgba(201,168,76,0.25);
+}
+
+#qr-container {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 3px solid var(--lds-gold, #c9a84c);
+}
+#qr-container img, #qr-container canvas { display: block; }
+
+#scan-label {
+  font-size: 0.78rem;
+  color: #8a9ab0;
+  text-align: center;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#response-count {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #c9a84c;
+  text-align: center;
+}
+
+#survey-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #8a9ab0;
+  margin-top: auto;
+}
+#survey-info strong { color: #d8dde6; font-size: 0.82rem; }
+
+/* Viz area */
+#viz-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 48px;
+  overflow: hidden;
+  color: #f0f2f5;
+}
+
+.placeholder {
+  margin: auto;
+  font-size: 1.3rem;
+  color: #4a5568;
+  text-align: center;
+}
+
+#viz-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#question-prompt {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+  line-height: 1.3;
+  color: #f0f2f5;
+  border-left: 4px solid #c9a84c;
+  padding-left: 16px;
+}
+
+#viz {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+#viz canvas { width: 100% !important; height: 100% !important; }
+#wc-canvas { width: 100% !important; height: 100% !important; }
+
+.no-data {
+  color: #4a5568;
+  font-size: 1.2rem;
+  text-align: center;
+  padding-top: 60px;
+}
+
+#avg-display {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #c9a84c;
+  margin-top: 16px;
+}

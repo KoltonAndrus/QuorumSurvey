@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Display — QuorumSurvey</title>
+  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/display.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="display-body">
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__brand" href="/admin">
+        <img class="site-header__logo" src="/assets/LDS_Logo.png" alt="LDS Logo" />
+        <img class="site-header__wordmark" src="/assets/LDS_Wordmark.svg" alt="The Church of Jesus Christ of Latter-day Saints" />
+      </a>
+      <div class="site-header__divider"></div>
+      <span class="site-header__app-name">QuorumSurvey</span>
+      <nav class="site-header__nav">
+        <a href="/">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/display" class="active">Display</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="app">
+    <div id="loading" class="screen">Loading…</div>
+    <div id="not-found" class="screen hidden">Survey not found.</div>
+
+    <div id="display" class="screen hidden">
+      <aside id="sidebar">
+        <div id="qr-container"></div>
+        <p id="scan-label">Scan to respond</p>
+        <div id="response-count">0 responses</div>
+        <div id="survey-info">
+          <strong id="sidebar-title"></strong>
+          <span id="sidebar-question"></span>
+        </div>
+      </aside>
+
+      <main id="viz-area">
+        <div id="no-question" class="placeholder">Waiting for admin to pin a question…</div>
+        <div id="viz-container" class="hidden">
+          <h2 id="question-prompt"></h2>
+          <div id="viz"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/js/display.js"></script>
+</body>
+</html>

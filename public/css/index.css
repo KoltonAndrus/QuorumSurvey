@@ -1,0 +1,129 @@
+#app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* No active state */
+.state-card {
+  text-align: center;
+  padding: 80px 24px;
+}
+.state-icon { font-size: 3rem; margin-bottom: 16px; }
+.state-card h2 { font-size: 1.6rem; color: var(--lds-navy); margin-bottom: 8px; }
+.state-card p  { color: var(--muted); margin-bottom: 28px; }
+
+/* Hub layout */
+.hub-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 64px;
+  align-items: start;
+}
+
+@media (max-width: 700px) {
+  .hub-layout { grid-template-columns: 1fr; gap: 40px; }
+  .hub-right   { order: -1; }
+}
+
+/* Left column */
+.hub-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lds-gold);
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--lds-navy);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.survey-desc {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 36px;
+  line-height: 1.5;
+}
+
+/* CTA buttons */
+.hub-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+  max-width: 340px;
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  cursor: pointer;
+}
+.cta-btn:active { transform: scale(0.98); }
+.cta-icon { font-size: 1.1rem; }
+
+.cta-primary  { background: var(--lds-navy); color: #fff; }
+.cta-primary:hover  { background: #253660; }
+
+.cta-secondary { background: var(--lds-gold); color: var(--lds-navy); }
+.cta-secondary:hover { background: #b8973f; }
+
+.cta-ghost { background: transparent; color: var(--lds-navy); border: 1.5px solid var(--lds-navy); }
+.cta-ghost:hover { background: #edf0f7; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  gap: 32px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--lds-navy);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Right column — QR */
+.hub-right { text-align: center; }
+
+.qr-wrap {
+  display: inline-block;
+  padding: 16px;
+  background: #fff;
+  border-radius: 16px;
+  border: 3px solid var(--lds-gold);
+  box-shadow: 0 4px 20px rgba(26,39,68,0.12);
+  margin-bottom: 12px;
+}
+
+.qr-url {
+  font-size: 0.75rem;
+  color: var(--muted);
+  word-break: break-all;
+  max-width: 280px;
+  margin: 0 auto;
+}

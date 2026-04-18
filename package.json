@@ -1,0 +1,27 @@
+{
+  "name": "quorumsurvey",
+  "version": "1.0.0",
+  "description": "A real-time audience survey tool for live presentations and events. Attendees scan a QR code to submit responses from their phones; results appear instantly on screen as word clouds, bar charts, pie charts, or rating histograms.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KoltonAndrus/QuorumSurvey.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KoltonAndrus/QuorumSurvey/issues"
+  },
+  "homepage": "https://github.com/KoltonAndrus/QuorumSurvey#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "socket.io": "^4.8.3",
+    "uuid": "^13.0.0"
+  }
+}

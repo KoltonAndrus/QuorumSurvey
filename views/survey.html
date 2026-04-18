@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survey — QuorumSurvey</title>
+  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/survey.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__brand" href="/admin">
+        <img class="site-header__logo" src="/assets/LDS_Logo.png" alt="LDS Logo" />
+        <img class="site-header__wordmark" src="/assets/LDS_Wordmark.svg" alt="The Church of Jesus Christ of Latter-day Saints" />
+      </a>
+      <div class="site-header__divider"></div>
+      <span class="site-header__app-name">QuorumSurvey</span>
+      <nav class="site-header__nav">
+        <a href="/">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/display">Display</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="app">
+    <div id="loading" class="screen">Loading survey…</div>
+    <div id="not-found" class="screen hidden">Survey not found.</div>
+    <div id="already-submitted" class="screen hidden">
+      <div class="thankyou-icon">✓</div>
+      <h2>Already submitted</h2>
+      <p>You've already responded to this survey.</p>
+    </div>
+    <div id="survey-form" class="screen hidden">
+      <header class="survey-header">
+        <h1 id="survey-title"></h1>
+        <p id="survey-description"></p>
+      </header>
+      <form id="form">
+        <div id="questions"></div>
+        <button type="submit" id="submit-btn">Submit</button>
+      </form>
+    </div>
+    <div id="thankyou" class="screen hidden">
+      <div class="thankyou-icon">✓</div>
+      <h2>Thank you!</h2>
+      <p>Your response has been recorded.</p>
+    </div>
+  </div>
+
+  <script src="/js/survey.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuorumSurvey</title>
+  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__brand" href="/">
+        <img class="site-header__logo" src="/assets/LDS_Logo.png" alt="LDS Logo" />
+        <img class="site-header__wordmark" src="/assets/LDS_Wordmark.svg" alt="The Church of Jesus Christ of Latter-day Saints" />
+      </a>
+      <div class="site-header__divider"></div>
+      <span class="site-header__app-name">QuorumSurvey</span>
+      <nav class="site-header__nav">
+        <a href="/" class="active">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/display">Display</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app">
+    <div id="no-active" class="state-card hidden">
+      <div class="state-icon">📋</div>
+      <h2>No active survey</h2>
+      <p>Create and activate a survey in the Admin page to get started.</p>
+      <a href="/admin" class="cta-btn">Go to Admin</a>
+    </div>
+
+    <div id="active-survey" class="hidden">
+      <div class="hub-layout">
+
+        <div class="hub-left">
+          <p class="hub-label">Active Survey</p>
+          <h1 id="survey-title"></h1>
+          <p id="survey-description" class="survey-desc"></p>
+
+          <div class="hub-actions">
+            <a href="/display" class="cta-btn cta-primary" id="display-link">
+              <span class="cta-icon">📺</span> Open Display
+            </a>
+            <a href="/survey" class="cta-btn cta-secondary" id="survey-link">
+              <span class="cta-icon">✏️</span> Take Survey
+            </a>
+            <a href="/admin" class="cta-btn cta-ghost">
+              <span class="cta-icon">⚙️</span> Manage in Admin
+            </a>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat">
+              <span class="stat-value" id="response-count">0</span>
+              <span class="stat-label">Responses</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="question-count">0</span>
+              <span class="stat-label">Questions</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hub-right">
+          <p class="hub-label">Scan to Respond</p>
+          <div class="qr-wrap">
+            <div id="qr-code"></div>
+          </div>
+          <p class="qr-url" id="qr-url"></p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Vite cache
+.vite/
+
+# Test coverage
+coverage/
+
+# macOS
+.DS_Store
+
+# Generated report files (directory preserved via .gitkeep)
+data/reports/*.md
+
+# Survey runtime data (generated at runtime)
+data/surveys/
+data/responses/
+data/state.json
+
+# Claude Code local settings
+.claude/settings.local.json

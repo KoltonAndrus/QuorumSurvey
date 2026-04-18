@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — QuorumSurvey</title>
+  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__brand" href="/admin">
+        <img class="site-header__logo" src="/assets/LDS_Logo.png" alt="LDS Logo" />
+        <img class="site-header__wordmark" src="/assets/LDS_Wordmark.svg" alt="The Church of Jesus Christ of Latter-day Saints" />
+      </a>
+      <div class="site-header__divider"></div>
+      <span class="site-header__app-name">QuorumSurvey</span>
+      <nav class="site-header__nav">
+        <a href="/">Home</a>
+        <a href="/admin" class="active">Admin</a>
+        <a href="/display">Display</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="app">
+    <!-- Survey list -->
+    <section id="list-view">
+      <div class="section-header">
+        <h2>Surveys</h2>
+        <button id="new-survey-btn" class="btn btn-primary">+ New Survey</button>
+      </div>
+      <div id="survey-list"></div>
+    </section>
+
+    <!-- Create / Edit form -->
+    <section id="editor-view" class="hidden">
+      <div class="editor-header">
+        <button id="back-btn" class="btn btn-ghost">← Back</button>
+        <h2 id="editor-title">New Survey</h2>
+      </div>
+
+      <form id="survey-form">
+        <div class="field">
+          <label for="f-title">Title</label>
+          <input id="f-title" type="text" placeholder="e.g. Post-talk Q&A" required />
+        </div>
+        <div class="field">
+          <label for="f-desc">Description <span class="optional">(optional)</span></label>
+          <input id="f-desc" type="text" placeholder="Shown to respondents" />
+        </div>
+
+        <h3>Questions</h3>
+        <div id="question-list"></div>
+        <button type="button" id="add-question-btn" class="btn btn-ghost">+ Add question</button>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="save-btn">Save Survey</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Active survey controls -->
+    <section id="active-view" class="hidden">
+      <div class="editor-header">
+        <button id="active-back-btn" class="btn btn-ghost">← Back</button>
+        <h2 id="active-title"></h2>
+        <a id="open-display-btn" class="btn btn-secondary" target="_blank">Open Display</a>
+      </div>
+
+      <div class="active-meta">
+        <span id="active-response-count" class="response-badge">0 responses</span>
+      </div>
+
+      <h3>Pin question to display</h3>
+      <div id="pin-list"></div>
+    </section>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
