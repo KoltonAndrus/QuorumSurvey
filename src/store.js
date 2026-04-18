@@ -2,7 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
 const SURVEYS_DIR = path.join(DATA_DIR, 'surveys');
 const RESPONSES_DIR = path.join(DATA_DIR, 'responses');
 const STATE_FILE = path.join(DATA_DIR, 'state.json');

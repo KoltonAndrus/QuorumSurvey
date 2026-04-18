@@ -1,5 +1,6 @@
 /* ── Global reset & tokens ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { max-width: 100%; overflow-x: hidden; }
 
 :root {
   --lds-navy:    #1a2744;
@@ -7,9 +8,9 @@
   --lds-white:   #ffffff;
   --lds-offwhite:#f5f5f0;
   --lds-border:  rgba(255,255,255,0.15);
-  --body-bg:     #f5f5f0;
-  --text:        #1a1a1a;
-  --muted:       #6e6e73;
+  --body-bg:     #ffffff;
+  --text:        #000000;
+  --muted:       #555555;
 }
 
 body {
@@ -103,6 +104,20 @@ body {
 .site-header__nav a.active {
   background: var(--lds-gold);
   color: var(--lds-navy);
+}
+
+@media (max-width: 600px) {
+  .site-header__inner {
+    padding: 0 16px;
+    gap: 10px;
+  }
+  .site-header__wordmark { display: none; }
+  .site-header__divider { display: none; }
+  .site-header__app-name { display: none; }
+  .site-header__nav a {
+    padding: 6px 8px;
+    font-size: 0.82rem;
+  }
 }
 
 /* ── Utility ── */

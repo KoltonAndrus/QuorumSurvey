@@ -65,7 +65,14 @@ textarea:focus { outline: none; border-color: var(--lds-navy); }
 .choice-card input { accent-color: var(--lds-navy); }
 
 /* Rating */
-.rating-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.rating-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
 
 .rating-btn {
   display: flex;

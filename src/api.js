@@ -36,7 +36,7 @@ function aggregateResults(survey, responses) {
   });
 }
 
-module.exports = function apiRouter(io) {
+function apiRouter(io) {
   const router = Router();
 
   // --- Surveys ---
@@ -145,4 +145,7 @@ module.exports = function apiRouter(io) {
   });
 
   return router;
-};
+}
+
+module.exports = apiRouter;
+module.exports.aggregateResults = aggregateResults;

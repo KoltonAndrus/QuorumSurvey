@@ -1,9 +1,12 @@
 const surveyId = location.pathname.split('/').pop();
 const socket = io();
 
+Chart.defaults.color = '#f0f2f5';
+
 let survey = null;
 let currentResults = null;
 let activeChart = null;
+let lastRenderKey = null;
 
 function show(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
@@ -33,9 +36,8 @@ function renderWordCloud(question, results) {
   if (!words.length) { viz.innerHTML = '<p class="no-data">No responses yet.</p>'; return; }
 
   const maxCount = words[0].count;
-  // Cap max font size so many words can coexist; scale grid with canvas width.
-  const maxFont = Math.min(72, Math.max(18, Math.floor(canvas.width / 10)));
-  const list = words.map(({ word, count }) => [word, Math.round(14 + (count / maxCount) * (maxFont - 14))]);
+  const maxFont = Math.min(300, Math.max(68, Math.floor(canvas.width / 3)));
+  const list = words.map(({ word, count }) => [word, Math.round(50 + (count / maxCount) * (maxFont - 50))]);
 
   const schemes = {
     blue:   () => `hsl(${210 + Math.random() * 40}, 80%, ${55 + Math.random() * 20}%)`,
@@ -47,7 +49,7 @@ function renderWordCloud(question, results) {
 
   WordCloud(canvas, {
     list,
-    gridSize: Math.round(canvas.width / 80),
+    gridSize: Math.round(canvas.width / 120),
     weightFactor: 1,
     fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
     color: colorFn,
@@ -58,7 +60,7 @@ function renderWordCloud(question, results) {
 
 function renderBarChart(question, results) {
   const viz = document.getElementById('viz');
-  viz.innerHTML = '<canvas id="chart-canvas"></canvas>';
+  viz.innerHTML = '<div class="bar-chart-wrap"><canvas id="chart-canvas"></canvas></div>';
   const ctx = document.getElementById('chart-canvas').getContext('2d');
 
   if (activeChart) { activeChart.destroy(); activeChart = null; }
@@ -67,17 +69,37 @@ function renderBarChart(question, results) {
   const data = labels.map(c => (results.counts || {})[c] || 0);
   const total = data.reduce((s, v) => s + v, 0);
 
+  const palette = ['#0071e3','#34c759','#ff9f0a','#ff3b30','#af52de','#5ac8fa','#ff6b35','#30d158'];
+  const backgroundColors = labels.map((_, i) => palette[i % palette.length]);
+
   activeChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels,
-      datasets: [{ data, backgroundColor: '#0071e3', borderRadius: 8, borderSkipped: false }],
+      datasets: [{ data, backgroundColor: backgroundColors, borderRadius: 8, borderSkipped: false }],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: { top: 52 } },
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: '#ffffff',
+            font: { size: 13 },
+            padding: 20,
+            generateLabels: (chart) => chart.data.labels.map((label, i) => ({
+              text: label,
+              fillStyle: backgroundColors[i],
+              strokeStyle: 'transparent',
+              lineWidth: 0,
+              hidden: false,
+              fontColor: '#ffffff',
+            })),
+          },
+        },
         tooltip: {
           callbacks: {
             label: ctx => {
@@ -86,12 +108,23 @@ function renderBarChart(question, results) {
             },
           },
         },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          color: '#f0f2f5',
+          font: { size: 13, weight: '600' },
+          formatter: (value) => {
+            const pct = total ? Math.round((value / total) * 100) : 0;
+            return `${value}\n${pct}%`;
+          },
+        },
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 18 }, color: '#1d1d1f' } },
-        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 14 }, color: '#6e6e73' }, grid: { color: '#e5e5ea' } },
+        x: { grid: { display: false }, ticks: { font: { size: 15 }, color: '#c8d4e3' } },
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 13 }, color: '#6e7a8a' }, grid: { color: 'rgba(255,255,255,0.07)' } },
       },
     },
+    plugins: [ChartDataLabels],
   });
 }
 
@@ -121,7 +154,7 @@ function renderPieChart(question, results) {
 
 function renderHistogram(question, results) {
   const viz = document.getElementById('viz');
-  viz.innerHTML = '<canvas id="chart-canvas"></canvas><div id="avg-display"></div>';
+  viz.innerHTML = '<div class="bar-chart-wrap"><canvas id="chart-canvas"></canvas></div>';
   const ctx = document.getElementById('chart-canvas').getContext('2d');
 
   if (activeChart) { activeChart.destroy(); activeChart = null; }
@@ -129,28 +162,89 @@ function renderHistogram(question, results) {
   const scale = question.scale || 5;
   const labels = Array.from({ length: scale }, (_, i) => String(i + 1));
   const data = labels.map(l => (results.buckets || {})[l] || 0);
+  const total = data.reduce((s, v) => s + v, 0);
+
+  const palette = ['#0071e3','#34c759','#ff9f0a','#ff3b30','#af52de','#5ac8fa','#ff6b35','#30d158'];
+  const backgroundColors = labels.map((_, i) => palette[i % palette.length]);
 
   activeChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels,
-      datasets: [{ data, backgroundColor: '#5ac8fa', borderRadius: 6, borderSkipped: false }],
+      datasets: [{ data, backgroundColor: backgroundColors, borderRadius: 6, borderSkipped: false }],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      layout: { padding: { top: 52 } },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: '#ffffff',
+            font: { size: 13 },
+            padding: 20,
+            generateLabels: (chart) => chart.data.labels.map((label, i) => ({
+              text: label,
+              fillStyle: backgroundColors[i],
+              strokeStyle: 'transparent',
+              lineWidth: 0,
+              hidden: false,
+              fontColor: '#ffffff',
+            })),
+          },
+        },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          color: '#f0f2f5',
+          font: { size: 13, weight: '600' },
+          formatter: (value) => {
+            const pct = total ? Math.round((value / total) * 100) : 0;
+            return `${value}\n${pct}%`;
+          },
+        },
+      },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 20 }, color: '#1d1d1f' } },
-        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 14 } }, grid: { color: '#e5e5ea' } },
+        x: { grid: { display: false }, ticks: { font: { size: 20 }, color: '#c8d4e3' } },
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 14 }, color: '#6e7a8a' }, grid: { color: 'rgba(255,255,255,0.07)' } },
       },
     },
+    plugins: [ChartDataLabels],
   });
 
   if (results.average !== null && results.count > 0) {
-    document.getElementById('avg-display').textContent =
-      `Average: ${results.average.toFixed(2)} / ${scale}  (${results.count} response${results.count !== 1 ? 's' : ''})`;
+    const avgDiv = document.createElement('div');
+    avgDiv.id = 'avg-display';
+    avgDiv.textContent = `Average: ${results.average.toFixed(2)} / ${scale}  (${results.count} response${results.count !== 1 ? 's' : ''})`;
+    viz.appendChild(avgDiv);
   }
+}
+
+// --- Question list ---
+
+function buildQuestionList() {
+  const list = document.getElementById('question-list');
+  list.innerHTML = '';
+  survey.questions.forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'question-btn';
+    btn.dataset.questionId = q.id;
+    btn.textContent = q.prompt;
+    btn.addEventListener('click', () => pinQuestion(q.id));
+    list.appendChild(btn);
+  });
+}
+
+function setActivePinBtn(questionId) {
+  document.querySelectorAll('.question-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.questionId === questionId);
+  });
+}
+
+async function pinQuestion(questionId) {
+  await fetch(`/api/surveys/${surveyId}/pin/${questionId}`, { method: 'PUT' });
 }
 
 // --- Display logic ---
@@ -163,6 +257,10 @@ function renderQuestion(questionId, results) {
 
   const qResults = results.questions.find(r => r.questionId === questionId);
   if (!qResults) return;
+
+  const renderKey = questionId + ':' + JSON.stringify(qResults);
+  if (renderKey === lastRenderKey) return;
+  lastRenderKey = renderKey;
 
   document.getElementById('no-question').classList.add('hidden');
   document.getElementById('viz-container').classList.remove('hidden');
@@ -194,6 +292,7 @@ async function init() {
 
   document.getElementById('sidebar-title').textContent = survey.title;
   document.title = survey.title;
+  buildQuestionList();
 
   // QR code — use real LAN IP so phones on the same network can reach the server
   const { baseUrl } = await fetch('/api/server-info').then(r => r.json());
@@ -215,6 +314,7 @@ async function init() {
   const stateRes = await fetch('/api/state');
   const state = await stateRes.json();
   if (state.pinnedQuestionId) {
+    setActivePinBtn(state.pinnedQuestionId);
     renderQuestion(state.pinnedQuestionId, currentResults);
   }
 
@@ -234,6 +334,7 @@ async function init() {
   socket.on('question_pinned', data => {
     if (data.surveyId !== surveyId) return;
     document.getElementById('viz-container').dataset.pinnedQuestion = data.questionId;
+    setActivePinBtn(data.questionId);
     renderQuestion(data.questionId, currentResults);
   });
 
@@ -244,3 +345,25 @@ async function init() {
 }
 
 init();
+
+// Safety-net poll in case the socket drops — re-fetches data but only re-renders
+// if the underlying results actually changed (lastRenderKey guards against flicker).
+setInterval(async () => {
+  try {
+    const [rRes, stateRes] = await Promise.all([
+      fetch(`/api/surveys/${surveyId}/results`),
+      fetch('/api/state'),
+    ]);
+    if (!rRes.ok) return;
+    currentResults = await rRes.json();
+    setResponseCount(currentResults.totalResponses);
+
+    const state = await stateRes.json();
+    const pinned = state.pinnedQuestionId;
+    if (pinned) {
+      document.getElementById('viz-container').dataset.pinnedQuestion = pinned;
+      setActivePinBtn(pinned);
+      renderQuestion(pinned, currentResults);
+    }
+  } catch { /* network blip — try again next tick */ }
+}, 10_000);

@@ -90,7 +90,7 @@ h3 { font-size: 1rem; font-weight: 600; margin: 24px 0 12px; color: var(--lds-na
 .editor-header h2 { margin: 0; flex: 1; }
 
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-.field label { font-size: 0.85rem; font-weight: 600; color: #3a3a3c; }
+.field label { font-size: 0.85rem; font-weight: 600; color: #000; }
 .field input, .field select, .field textarea {
   padding: 10px 12px;
   border: 1.5px solid #cdd0d8;
