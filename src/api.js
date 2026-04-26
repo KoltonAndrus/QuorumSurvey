@@ -101,6 +101,13 @@ function apiRouter(io) {
 
   // --- Results ---
 
+  router.get('/surveys/:id/responses', (req, res) => {
+    const survey = store.getSurvey(req.params.id);
+    if (!survey) return res.status(404).json({ error: 'Not found' });
+    const responses = store.getResponses(req.params.id);
+    res.json({ survey, responses });
+  });
+
   router.get('/surveys/:id/results', (req, res) => {
     const survey = store.getSurvey(req.params.id);
     if (!survey) return res.status(404).json({ error: 'Not found' });

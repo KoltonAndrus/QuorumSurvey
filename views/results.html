@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results — QuorumSurvey</title>
+  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/results.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__brand" href="/">
+        <img class="site-header__logo" src="/assets/LDS_Logo.png" alt="LDS Logo" />
+        <img class="site-header__wordmark" src="/assets/LDS_Wordmark.svg" alt="The Church of Jesus Christ of Latter-day Saints" />
+      </a>
+      <div class="site-header__divider"></div>
+      <span class="site-header__app-name">QuorumSurvey</span>
+      <nav class="site-header__nav">
+        <a href="/">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/results" class="active">Results</a>
+        <a href="/display">Display</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="app">
+    <section id="results-view">
+      <div class="section-header">
+        <h2>Survey Results</h2>
+        <div class="header-actions">
+          <select id="survey-select">
+            <option value="">— Select a survey —</option>
+          </select>
+          <button id="export-btn" class="btn btn-secondary" disabled>Export CSV</button>
+        </div>
+      </div>
+
+      <div id="results-meta" class="hidden">
+        <span id="response-count-badge" class="response-badge"></span>
+      </div>
+
+      <div id="empty-state" class="empty hidden">No responses yet for this survey.</div>
+      <div id="no-survey-state" class="empty">Select a survey above to view its responses.</div>
+
+      <div id="table-wrap" class="hidden">
+        <table id="results-table">
+          <thead id="results-thead"></thead>
+          <tbody id="results-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="/js/results.js"></script>
+</body>
+</html>

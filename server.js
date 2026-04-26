@@ -1,22 +1,12 @@
 const express = require('express');
 const http = require('http');
-const os = require('os');
 const { Server } = require('socket.io');
 const path = require('path');
 const { loadData } = require('./src/store');
 const apiRouter = require('./src/api');
 const { registerSocketHandlers } = require('./src/sockets');
 
-function getLanIp() {
-  for (const ifaces of Object.values(os.networkInterfaces())) {
-    for (const iface of ifaces) {
-      if (iface.family === 'IPv4' && !iface.internal) return iface.address;
-    }
-  }
-  return 'localhost';
-}
-
-const LAN_IP = getLanIp();
+const LAN_IP = '98.50.19.151';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -31,6 +21,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // Page routes
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'views', 'index.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'views', 'admin.html')));
+app.get('/results', (req, res) => res.sendFile(path.join(__dirname, 'views', 'results.html')));
 app.get('/display/:id', (req, res) => res.sendFile(path.join(__dirname, 'views', 'display.html')));
 app.get('/survey/:id', (req, res) => res.sendFile(path.join(__dirname, 'views', 'survey.html')));
 
