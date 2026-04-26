@@ -47,6 +47,7 @@ body.display-body .site-header {
   padding: 24px 16px;
   background: #162030;
   border-right: 1px solid rgba(201,168,76,0.25);
+  overflow: hidden;
 }
 
 #qr-container {
@@ -77,6 +78,9 @@ body.display-body .site-header {
   flex-direction: column;
   gap: 6px;
   width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .question-btn {
@@ -92,10 +96,13 @@ body.display-body .site-header {
   cursor: pointer;
   line-height: 1.3;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
-  overflow: hidden;
+}
+
+.question-btn span {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .question-btn:hover {

@@ -21,11 +21,38 @@ function filterStopWords(text) {
     .filter(w => w.length > 1 && !STOP_WORDS.has(w));
 }
 
+// Extracts n-grams of length n from text.
+// Skips n-grams whose first or last token is a stop word; interior stop words
+// are allowed so phrases like "state of the art" survive intact.
+function extractNgrams(text, n) {
+  // Keep single-char tokens (e.g. "b" in "bar b que") — they're valid phrase
+  // components even though they're filtered from standalone word counts.
+  const tokens = text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s'-]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 0);
+
+  const ngrams = [];
+  for (let i = 0; i <= tokens.length - n; i++) {
+    const gram = tokens.slice(i, i + n);
+    if (STOP_WORDS.has(gram[0]) || STOP_WORDS.has(gram[n - 1])) continue;
+    ngrams.push(gram.join(' '));
+  }
+  return ngrams;
+}
+
 function wordFrequency(texts) {
   const freq = {};
   for (const text of texts) {
     for (const word of filterStopWords(text)) {
       freq[word] = (freq[word] || 0) + 1;
+    }
+    for (const bigram of extractNgrams(text, 2)) {
+      freq[bigram] = (freq[bigram] || 0) + 1;
+    }
+    for (const trigram of extractNgrams(text, 3)) {
+      freq[trigram] = (freq[trigram] || 0) + 1;
     }
   }
   return Object.entries(freq)
@@ -33,4 +60,4 @@ function wordFrequency(texts) {
     .map(([word, count]) => ({ word, count }));
 }
 
-module.exports = { filterStopWords, wordFrequency };
+module.exports = { filterStopWords, wordFrequency, extractNgrams };

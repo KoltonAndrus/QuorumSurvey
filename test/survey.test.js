@@ -12,6 +12,7 @@ process.env.DATA_DIR = TEST_DATA_DIR;
 
 const store = require('../src/store');
 const { aggregateResults } = require('../src/api');
+const { extractNgrams, wordFrequency } = require('../src/stopWords');
 
 // ── Survey definition ──────────────────────────────────────────────────────
 
@@ -206,10 +207,33 @@ describe('Results aggregation', () => {
       }
     });
 
-    test('stop word "be" is excluded from the word cloud', () => {
+    test('stop word "be" is excluded from the word cloud as a standalone token', () => {
       const q     = results.find(r => r.questionId === freeTextId);
       const words = q.words.map(w => w.word);
       assert.ok(!words.includes('be'), '"be" should be filtered as a stop word');
+    });
+
+    test('bigram "great experience" appears with count 4', () => {
+      const q       = results.find(r => r.questionId === freeTextId);
+      const wordMap = Object.fromEntries(q.words.map(w => [w.word, w.count]));
+      assert.equal(wordMap['great experience'], 4, '"great experience" bigram count mismatch');
+    });
+
+    test('bigram "amazing service" appears with count 3', () => {
+      const q       = results.find(r => r.questionId === freeTextId);
+      const wordMap = Object.fromEntries(q.words.map(w => [w.word, w.count]));
+      assert.equal(wordMap['amazing service'], 3, '"amazing service" bigram count mismatch');
+    });
+
+    test('extractNgrams allows interior stop words but skips edge stop words', () => {
+      // "best in class" — interior stop word "in" is fine; first and last are content words
+      const trigrams = extractNgrams('best in class', 3);
+      assert.ok(trigrams.includes('best in class'), '"best in class" trigram should survive with interior stop word');
+
+      // n-grams whose first or last token is a stop word are dropped
+      const bigrams = extractNgrams('could be better', 2);
+      assert.ok(!bigrams.includes('could be'), '"could be" should be skipped — last word "be" is a stop word');
+      assert.ok(!bigrams.includes('be better'), '"be better" should be skipped — first word "be" is a stop word');
     });
 
     test('words are sorted by frequency descending', () => {
@@ -272,6 +296,42 @@ describe('Results aggregation', () => {
       assert.equal(q.buckets[5], max);
     });
   });
+});
+
+describe('Phrase extraction examples', () => {
+  const cases = [
+    {
+      input: 'bar b que',
+      phrase: 'bar b que',
+      words: ['bar', 'que'],
+    },
+    {
+      input: 'top golf',
+      phrase: 'top golf',
+      words: ['top', 'golf'],
+    },
+    {
+      input: 'Avs watch party',
+      phrase: 'avs watch party',
+      words: ['avs', 'watch', 'party'],
+    },
+  ];
+
+  for (const { input, phrase, words } of cases) {
+    test(`"${input}" produces the phrase "${phrase}"`, () => {
+      const result = wordFrequency([input]);
+      const found = result.map(w => w.word);
+      assert.ok(found.includes(phrase), `expected phrase "${phrase}" in results: ${JSON.stringify(found)}`);
+    });
+
+    for (const word of words) {
+      test(`"${input}" produces individual word "${word}"`, () => {
+        const result = wordFrequency([input]);
+        const found = result.map(w => w.word);
+        assert.ok(found.includes(word), `expected word "${word}" in results: ${JSON.stringify(found)}`);
+      });
+    }
+  }
 });
 
 describe('Display — question pinning', () => {

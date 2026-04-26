@@ -231,7 +231,9 @@ function buildQuestionList() {
     const btn = document.createElement('button');
     btn.className = 'question-btn';
     btn.dataset.questionId = q.id;
-    btn.textContent = q.prompt;
+    const label = document.createElement('span');
+    label.textContent = q.prompt;
+    btn.appendChild(label);
     btn.addEventListener('click', () => pinQuestion(q.id));
     list.appendChild(btn);
   });
